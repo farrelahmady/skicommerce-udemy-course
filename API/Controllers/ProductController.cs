@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Core.Interfaces;
 using Core.Specifications;
+using API.Dtos;
 
 namespace API.Controllers
 {
@@ -23,11 +24,13 @@ namespace API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<Product>>> GetProducts()
+		public async Task<ActionResult<List<ProductToReturnDto>>> GetProducts()
 		{
 			var spec = new ProductWithTypesAndBrandsSpecification();
 
-			return Ok(await this.productRepo.ListAsync(spec));
+			var products = await this.productRepo.ListAsync(spec);
+
+			return products.Select(product => new ProductToReturnDto(product)).ToList();
 		}
 
 		[HttpGet("brand")]
@@ -43,11 +46,12 @@ namespace API.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<Product>> GetProduct(int id)
+		public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
 		{
 			var spec = new ProductWithTypesAndBrandsSpecification(id);
 
-			return await this.productRepo.GetEntityWithSpec(spec);
+			var product = await this.productRepo.GetEntityWithSpec(spec);
+			return new ProductToReturnDto(product);
 		}
 	}
 }
