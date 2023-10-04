@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Core.Interfaces;
 using Core.Specifications;
 using API.Dtos;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -15,22 +16,24 @@ namespace API.Controllers
 		private readonly IGenericRepository<Product> productRepo;
 		private readonly IGenericRepository<ProductBrand> productBrandRepo;
 		private readonly IGenericRepository<ProductType> productTypeRepo;
+		private readonly IMapper mapper;
 
-		public ProductController(IGenericRepository<Product> productRepo, IGenericRepository<ProductBrand> productBrandRepo, IGenericRepository<ProductType> productTypeRepo)
+		public ProductController(IGenericRepository<Product> productRepo, IGenericRepository<ProductBrand> productBrandRepo, IGenericRepository<ProductType> productTypeRepo, IMapper mapper)
 		{
 			this.productRepo = productRepo;
 			this.productBrandRepo = productBrandRepo;
 			this.productTypeRepo = productTypeRepo;
+			this.mapper = mapper;
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<ProductToReturnDto>>> GetProducts()
+		public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts()
 		{
 			var spec = new ProductWithTypesAndBrandsSpecification();
 
 			var products = await this.productRepo.ListAsync(spec);
 
-			return products.Select(product => new ProductToReturnDto(product)).ToList();
+			return Ok(this.mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products));
 		}
 
 		[HttpGet("brand")]
@@ -51,7 +54,7 @@ namespace API.Controllers
 			var spec = new ProductWithTypesAndBrandsSpecification(id);
 
 			var product = await this.productRepo.GetEntityWithSpec(spec);
-			return new ProductToReturnDto(product);
+			return this.mapper.Map<Product, ProductToReturnDto>(product);
 		}
 	}
 }
