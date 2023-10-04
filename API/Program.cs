@@ -2,6 +2,7 @@ using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +29,18 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-
 // app.UseHttpsRedirection();
+
+app.UseStaticFiles(); // ? wwwroot
+
+// app.UseStaticFiles(
+// 	new StaticFileOptions
+// 	{
+// 		FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Storage")),
+// 	}
+// ); // ? Custom file provider (Storage folder)
+
+
 
 app.UseAuthorization();
 
