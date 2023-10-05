@@ -1,4 +1,5 @@
 using API.Errors;
+using API.Extensions;
 using API.Middlewares;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -13,32 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<StoreContext>(opt =>
-{
-	opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-	options.InvalidModelStateResponseFactory = actionContext =>
-	{
-		var errors = actionContext.ModelState
-			.Where(x => x.Value.Errors.Any())
-			.ToDictionary(
-					x => x.Key,
-					x => x.Value.Errors.Select(y => y.ErrorMessage).ToArray()
-				);
 
-		return new BadRequestObjectResult(new ApiValidationErrorResponse
-		{
-			Errors = errors
-		});
-	};
-});
+builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
