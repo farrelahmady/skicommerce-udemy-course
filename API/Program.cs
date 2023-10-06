@@ -41,7 +41,7 @@ app.UseStaticFiles(); // ? wwwroot
 // 	}
 // ); // ? Custom file provider (Storage folder)
 
-
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 
