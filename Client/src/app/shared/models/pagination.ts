@@ -1,4 +1,4 @@
-export type IPagination<T> = {
+export type Pagination<T> = {
   pageIndex: number;
   pageSize: number;
   count: number;
