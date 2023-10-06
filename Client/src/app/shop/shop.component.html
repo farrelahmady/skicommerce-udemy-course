@@ -34,21 +34,12 @@
 
     <section class="col-9">
       <div class="d-flex justify-content-between align-items-center pb-2">
-        <header>
-          <span *ngIf="totalCount > 0"
-            >Showing
-            <strong>
-              {{ (shopParam.pageNumber - 1) * shopParam.pageSize + 1 }} -
-              {{
-                shopParam.pageNumber * shopParam.pageSize > totalCount
-                  ? totalCount
-                  : shopParam.pageNumber * shopParam.pageSize
-              }}
-            </strong>
-            of <strong>{{ totalCount }}</strong> Results
-          </span>
-          <span *ngIf="totalCount === 0">There are no products</span>
-        </header>
+        <app-pagination-header
+          [pageNumber]="shopParam.pageNumber"
+          [pageSize]="shopParam.pageSize"
+          [totalCount]="totalCount"
+        />
+
         <div class="d-flex mt-2">
           <input type="text" placeholder="Search" class="form-control me-2" />
           <button class="btn btn-outline-primary mx-2">Search</button>
@@ -63,18 +54,11 @@
       </div>
 
       <div class="d-flex justify-content-center mt-3" *ngIf="totalCount > 0">
-        <pagination
-          [boundaryLinks]="true"
-          [totalItems]="totalCount"
-          [maxSize]="5"
-          [itemsPerPage]="shopParam.pageSize"
-          (pageChanged)="onPageChanged($event)"
-          previousText="&lsaquo;"
-          nextText="&rsaquo;"
-          firstText="&laquo;"
-          lastText="&raquo;"
-        >
-        </pagination>
+        <app-pagination
+          [pageSize]="shopParam.pageSize"
+          [totalCount]="totalCount"
+          (paginate)="onPageChanged($event)"
+        />
       </div>
     </section>
   </div>
