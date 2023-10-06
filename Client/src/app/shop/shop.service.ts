@@ -1,3 +1,4 @@
+import { ShopParams } from './../shared/models/shopParams';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from '../shared/models/product';
@@ -13,14 +14,17 @@ export class ShopService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts(brandId?: number, typeId?: number, sort?: string) {
+  getProducts(shopParam: ShopParams) {
     let params = new HttpParams();
 
-    if (brandId) params = params.append('brandId', brandId);
-    if (typeId) params = params.append('typeId', typeId);
-    if (sort) params = params.append('sort', sort);
+    if (shopParam.brandId) params = params.append('brandId', shopParam.brandId);
+    if (shopParam.typeId) params = params.append('typeId', shopParam.typeId);
+    if (shopParam.search) params = params.append('search', shopParam.search);
+    params = params.append('sort', shopParam.sort);
+    params = params.append('pageSize', shopParam.pageSize);
+    params = params.append('pageIndex', shopParam.pageNumber);
 
-    console.log(params);
+    console.log(shopParam);
 
     return this.http.get<Pagination<Product[]>>(`${this.baseUrl}/product`, {
       params: params,
