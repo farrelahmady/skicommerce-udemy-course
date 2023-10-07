@@ -9,10 +9,11 @@ import {
 import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toastr: ToastrService) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -27,7 +28,11 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
 
             case 400:
-              this.router.navigateByUrl('/server-error');
+              if (err.error.errors) {
+                throw err.error;
+              } else {
+                this.router.navigateByUrl('/server-error');
+              }
               break;
 
             default:
@@ -39,6 +44,8 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (!environment.production) {
           console.log(err);
         }
+
+        this.toastr.error(err.error.message, err.status.toString() + 'Error');
 
         return throwError(() => new Error(err.message));
       })
