@@ -30,7 +30,6 @@ export class ShopService {
       params: params,
     });
   }
-
   getBrands() {
     return this.http.get<Brand[]>(`${this.baseUrl}/product/brand`);
   }
