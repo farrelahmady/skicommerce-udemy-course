@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'SkiCommerce';
 
-  constructor() {}
+  constructor() {
+    console.log(environment.apiUrl);
+  }
 
   ngOnInit(): void {}
 }
