@@ -1,3 +1,11 @@
 <div class="container mt-5">
-  <h1>Server Error</h1>
+  <h1>
+    Server Error <span *ngIf="error">- {{ error.message }}</span>
+  </h1>
+
+  <ng-container *ngIf="error">
+    <pre class="text-danger p-2 mt-5" style="background-color: whitesmoke">{{
+      error.details
+    }}</pre>
+  </ng-container>
 </div>

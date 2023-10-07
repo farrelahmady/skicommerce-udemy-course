@@ -7,7 +7,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 
@@ -36,7 +36,10 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
 
             default:
-              this.router.navigateByUrl('/server-error');
+              const navigationExtras: NavigationExtras = {
+                state: { error: err.error },
+              };
+              this.router.navigateByUrl('/server-error', navigationExtras);
               break;
           }
         }
