@@ -16,7 +16,9 @@ export class ProductDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private bcService: BreadcrumbService
-  ) {}
+  ) {
+    this.bcService.set('@productDetails', ' ');
+  }
 
   ngOnInit(): void {
     const id = Number(this.activatedRoute.snapshot.params['id']);
