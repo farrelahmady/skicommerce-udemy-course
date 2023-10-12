@@ -5,7 +5,11 @@
         <h1>Title Goes Here</h1>
       </div>
       <div class="col-3">
-        <xng-breadcrumb />
+        <xng-breadcrumb>
+          <ng-container *xngBreadcrumbItem="let breadcumb">
+            {{ breadcumb | titlecase }}
+          </ng-container>
+        </xng-breadcrumb>
       </div>
     </div>
   </div>

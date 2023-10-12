@@ -11,6 +11,11 @@ const routes: Route[] = [
   {
     path: ':id',
     component: ProductDetailsComponent,
+    data: {
+      breadcrumb: {
+        alias: 'productDetails',
+      },
+    },
   },
 ];
 @NgModule({
