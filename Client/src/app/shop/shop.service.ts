@@ -22,13 +22,17 @@ export class ShopService {
    * @returns {Observable<Pagination<Product[]>>} - An observable of the paginated product list.
    */
   getProducts(shopParam: ShopParams): Observable<Pagination<Product[]>> {
-    const params = new HttpParams()
-      .append('brandId', shopParam.brandId)
-      .append('typeId', shopParam.typeId)
-      .append('search', shopParam.search)
-      .append('sort', shopParam.sort)
-      .append('pageSize', shopParam.pageSize)
-      .append('pageIndex', shopParam.pageNumber);
+    let params = new HttpParams();
+    if (shopParam.brandId > 0)
+      params = params.append('brandId', shopParam.brandId);
+    if (shopParam.typeId > 0)
+      params = params.append('typeId', shopParam.typeId);
+
+    if (shopParam.search) params = params.append('search', shopParam.search);
+
+    params = params.append('sort', shopParam.sort);
+    params = params.append('pageSize', shopParam.pageSize);
+    params = params.append('pageIndex', shopParam.pageNumber);
 
     console.log('Params:', params.toString());
 

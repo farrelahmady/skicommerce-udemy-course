@@ -18,7 +18,7 @@ namespace Core.Specifications
 		public string Search
 		{
 			get => this.search;
-			set => this.search = value.ToLower();
+			set => this.search = value?.ToLower();
 		}
 	}
 }
